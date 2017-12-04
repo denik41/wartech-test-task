@@ -1,0 +1,16 @@
+.sample-container {
+    flex-direction: column;
+    border: solid 1px black;
+}
+
+.name {
+    display: block;
+}
+
+.description {
+
+}
+
+.green-background {
+    background-color: #b1ffa0;
+}
