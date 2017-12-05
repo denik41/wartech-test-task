@@ -31,6 +31,7 @@ router.delete('/:collectionId', (req, res, next) => {
 })
 
 router.put('/:collectionId', (req, res, next) => {
+  console.log('BLA - ' + req.body.name)
   Collection.findByIdAndUpdate(
     req.params.collectionId,
     { $set: req.body },

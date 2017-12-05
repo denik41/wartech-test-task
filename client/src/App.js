@@ -2,8 +2,7 @@ import React, {Component} from 'react';
 import './App.css';
 import {
     BrowserRouter as Router,
-    Route,
-    Link
+    Route
 } from 'react-router-dom';
 
 import CollectionsContainer from './components/collections-container';

@@ -9,6 +9,9 @@ const DEV = process.env.NODE_ENV !== 'production'
 const app = express()
 
 app.use(cors())
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 app.use(bodyParser.json())
 
 const root = path.resolve(__dirname, 'client/build')

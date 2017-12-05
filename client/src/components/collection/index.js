@@ -1,23 +1,97 @@
 import React, {Component} from 'react';
 import './style.css';
 import {connect} from 'react-redux';
-import {getSingleCollection} from '../../actions/collections';
+import {
+    getSingleCollection,
+    editSingleCollection
+} from '../../actions/collections';
 
 class Collection extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            editName: "",
+            editDescription: ""
+        }
+    }
+
     componentDidMount() {
         this.props.getSingleCollection(this.props.match.params.id);
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (this.props.collection.loading && !nextProps.collection.loading) {
+            this.setState({
+                editName: nextProps.collection.data.name,
+                editDescription: nextProps.collection.data.description
+            });
+        }
+    }
+
     render() {
+        const collection = this.props.collection.data;
         if (!this.props.collection.data) {
             return null;
         }
-        return <div className="sample-container">
-            {this.props.collection.data.books.map((book, index) => {
-                return <div key={index}>
-                    {book.name}
-                </div>;
-            })}
+
+        const books = this.props.collection.data.books;
+        const booksElem = books.map((book, index) => {
+            return <div key={index}>
+                {book.name}
+            </div>;
+        });
+        return <div>
+            <div>
+                <h3>{collection.name}</h3>
+                <span>{collection.description}</span>
+                <div>
+                    <button onClick={() => {
+                        this.dialog.show();
+                    }}>
+                        Edit collection's info
+                    </button>
+                </div>
+            </div>
+            {books.length !== 0 ? booksElem :
+                <span>No books</span>
+            }
+            <dialog ref={dialog => this.dialog = dialog}>
+                <label>Name<input type="text"
+                                  autoComplete="off"
+                                  maxLength="100"
+                                  value={this.state.editName}
+                                  onChange={(event) => {
+                                      this.setState({
+                                          editName: event.target.value
+                                      });
+                                  }}/>
+                </label>
+                <label>Description
+                    <textarea autoComplete="off"
+                              maxLength="500"
+                              wrap="soft"
+                              value={this.state.editDescription}
+                              onChange={(event) => {
+                                  this.setState({
+                                      editDescription: event.target.value
+                                  });
+                              }}/>
+                </label>
+                <p>
+                    <button onClick={() => {
+                        this.props.editSingleCollection({
+                            id: this.props.match.params.id,
+                            name: this.state.editName,
+                            description: this.state.editDescription
+                        });
+                    }}>Edit
+                    </button>
+                    <button onClick={() => {
+                        this.dialog.close();
+                    }}>Close
+                    </button>
+                </p>
+            </dialog>
         </div>
     }
 }
@@ -29,6 +103,9 @@ export default connect(
     dispatch => ({
         getSingleCollection: (id) => {
             dispatch(getSingleCollection(id))
+        },
+        editSingleCollection: (params) => {
+            dispatch(editSingleCollection(params))
         }
     })
 )(Collection);
