@@ -3,8 +3,13 @@ import './style.css';
 import {connect} from 'react-redux';
 import {
     getSingleCollection,
-    editSingleCollection
+    editSingleCollection,
+    addBook
 } from '../../actions/collections';
+import {
+    getBooks
+} from '../../actions/books';
+import AddBook from '../add-book-component';
 
 class Collection extends Component {
     constructor(props) {
@@ -17,6 +22,7 @@ class Collection extends Component {
 
     componentDidMount() {
         this.props.getSingleCollection(this.props.match.params.id);
+        this.props.getBooks();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -38,6 +44,9 @@ class Collection extends Component {
         const booksElem = books.map((book, index) => {
             return <div key={index}>
                 {book.name}
+                <div>
+                    <button>Remove book</button>
+                </div>
             </div>;
         });
         return <div>
@@ -52,6 +61,10 @@ class Collection extends Component {
                     </button>
                 </div>
             </div>
+            <AddBook addBook={(book) => {
+                this.props.addBook(book, this.props.match.params.id);
+            }}
+                     books={this.props.books}/>
             {books.length !== 0 ? booksElem :
                 <span>No books</span>
             }
@@ -98,7 +111,8 @@ class Collection extends Component {
 
 export default connect(
     state => ({
-        collection: state.singleCollection
+        collection: state.singleCollection,
+        books: state.books.data
     }),
     dispatch => ({
         getSingleCollection: (id) => {
@@ -106,6 +120,12 @@ export default connect(
         },
         editSingleCollection: (params) => {
             dispatch(editSingleCollection(params))
+        },
+        getBooks: () => {
+            dispatch(getBooks())
+        },
+        addBook: (book, collectionId) => {
+            dispatch(addBook(book, collectionId))
         }
     })
 )(Collection);

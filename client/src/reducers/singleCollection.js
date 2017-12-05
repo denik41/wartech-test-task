@@ -4,8 +4,9 @@ import {
     GET_SINGLE_COLLECTION_FAILED,
     EDIT_SINGLE_COLLECTION,
     EDIT_SINGLE_COLLECTION_SUCCEED,
-    EDIT_SINGLE_COLLECTION_FAILED
-} from '../constants';
+    EDIT_SINGLE_COLLECTION_FAILED,
+    ADD_BOOK_SUCCEED
+} from '../constants/collections';
 
 const initialState = {
     data: null,
@@ -38,6 +39,15 @@ export default (state = initialState, action) => {
     }
     if (action.type === EDIT_SINGLE_COLLECTION_FAILED) {
         return {isError: true, loading: false, data: action.payload};
+    }
+    if (action.type === ADD_BOOK_SUCCEED) {
+        return {
+            ...state,
+            data: {
+                ...state.data,
+                books: [...state.data.books, action.payload]
+            }
+        }
     }
     return state;
 }
