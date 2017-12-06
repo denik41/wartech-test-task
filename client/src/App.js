@@ -13,6 +13,8 @@ export default class App extends Component {
         return (
             <Router>
                 <div className="App">
+                    <button>Create collection</button>
+                    <button>Create book</button>
                     <Route exact path="/" component={CollectionsContainer}/>
                     <Route path="/collection/:id" component={Collection}/>
                 </div>

@@ -5,7 +5,8 @@ import {
     EDIT_SINGLE_COLLECTION,
     EDIT_SINGLE_COLLECTION_SUCCEED,
     EDIT_SINGLE_COLLECTION_FAILED,
-    ADD_BOOK_SUCCEED
+    ADD_BOOK_SUCCEED,
+    REMOVE_BOOK_SUCCEED
 } from '../constants/collections';
 
 const initialState = {
@@ -46,6 +47,18 @@ export default (state = initialState, action) => {
             data: {
                 ...state.data,
                 books: [...state.data.books, action.payload]
+            }
+        }
+    }
+    if (action.type === REMOVE_BOOK_SUCCEED) {
+        const books = state.data.books.slice();
+        books.splice(action.payload, 1);
+
+        return {
+            ...state,
+            data: {
+                ...state.data,
+                books
             }
         }
     }

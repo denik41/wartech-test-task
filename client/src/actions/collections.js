@@ -2,7 +2,8 @@ import {
     GET_COLLECTIONS,
     GET_SINGLE_COLLECTION,
     EDIT_SINGLE_COLLECTION,
-    ADD_BOOK
+    ADD_BOOK,
+    REMOVE_BOOK
 } from '../constants/collections';
 
 export const getCollections = () => {
@@ -31,6 +32,17 @@ export const addBook = (book, collectionId) => {
         payload: {
             book,
             collectionId
+        }
+    }
+};
+
+export const removeBook = (collectionId, bookId, index) => {
+    return {
+        type: REMOVE_BOOK,
+        payload: {
+            collectionId,
+            bookId,
+            index
         }
     }
 };

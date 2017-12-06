@@ -4,7 +4,8 @@ import {connect} from 'react-redux';
 import {
     getSingleCollection,
     editSingleCollection,
-    addBook
+    addBook,
+    removeBook
 } from '../../actions/collections';
 import {
     getBooks
@@ -45,7 +46,9 @@ class Collection extends Component {
             return <div key={index}>
                 {book.name}
                 <div>
-                    <button>Remove book</button>
+                    <button onClick={() => {
+                        this.props.removeBook(this.props.match.params.id, book._id, index);
+                    }}>Remove book</button>
                 </div>
             </div>;
         });
@@ -126,6 +129,9 @@ export default connect(
         },
         addBook: (book, collectionId) => {
             dispatch(addBook(book, collectionId))
+        },
+        removeBook: (collectionId, bookId, index) => {
+            dispatch(removeBook(collectionId, bookId, index))
         }
     })
 )(Collection);

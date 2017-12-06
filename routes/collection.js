@@ -42,7 +42,6 @@ router.put('/:collectionId', (req, res, next) => {
 })
 
 router.post('/:collectionId/books', (req, res, next) => {
-  console.log('post bookId ' + req.body.bookId);
   Collection.findByIdAndUpdate(
     req.params.collectionId,
     { $push: { books: req.body.bookId } },

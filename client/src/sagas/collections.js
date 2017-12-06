@@ -10,7 +10,10 @@ import {
     EDIT_SINGLE_COLLECTION_FAILED,
     ADD_BOOK,
     ADD_BOOK_SUCCEED,
-    ADD_BOOK_FAILED
+    ADD_BOOK_FAILED,
+    REMOVE_BOOK,
+    REMOVE_BOOK_SUCCEED,
+    REMOVE_BOOK_FAILED
 } from '../constants/collections';
 import {call, takeEvery, put} from 'redux-saga/effects';
 import axios from 'axios';
@@ -59,7 +62,6 @@ function* editSingleCollectionAsync(action) {
 
 function* addBookAsync(action) {
     try {
-        console.log(action.payload.book._id);
         const config = {
             method: 'POST',
             url: `http://localhost:3001/api/collections/${action.payload.collectionId}/books`,
@@ -78,6 +80,18 @@ function* addBookAsync(action) {
     }
 }
 
+function* removeBookAsync(action) {
+    try {
+        const response = yield call(axios.delete, `http://localhost:3001/api/collections/${action.payload.collectionId}/books/${action.payload.bookId}`);
+        console.log(response);
+        yield put({type: REMOVE_BOOK_SUCCEED, payload: action.payload.index});
+    } catch (error) {
+        console.log("Error occurred: " + error);
+
+        yield put({type: REMOVE_BOOK_FAILED, payload: error.message});
+    }
+}
+
 export function* watchGetCollections() {
     yield takeEvery(GET_COLLECTIONS, getCollectionsAsync);
 }
@@ -92,4 +106,8 @@ export function* watchEditSingleCollection() {
 
 export function* watchAddBook() {
     yield takeEvery(ADD_BOOK, addBookAsync);
+}
+
+export function* watchRemoveBook() {
+    yield takeEvery(REMOVE_BOOK, removeBookAsync);
 }
