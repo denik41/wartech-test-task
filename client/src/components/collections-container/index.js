@@ -89,7 +89,9 @@ class CollectionsContainer extends Component {
                         id: this.state.editCollection.collectionId,
                         name: this.state.editCollection.name,
                         description: this.state.editCollection.description
-                    });
+                    }, () => {
+                        this.onCloseModal();
+                    }, false);
                 }}
                         className="edit-button">
                     Edit
@@ -122,8 +124,8 @@ export default connect(
         getCollections: () => {
             dispatch(getCollections())
         },
-        editSingleCollection: (params) => {
-            dispatch(editSingleCollection(params))
+        editSingleCollection: (params, callback, reqFromSingleCollection) => {
+            dispatch(editSingleCollection(params, callback, reqFromSingleCollection))
         },
     })
 )(CollectionsContainer);

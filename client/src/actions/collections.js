@@ -19,10 +19,12 @@ export const getSingleCollection = (id) => {
     }
 };
 
-export const editSingleCollection = (params) => {
+export const editSingleCollection = (params, callback, reqFromSingleCollection = true) => {
     return {
         type: EDIT_SINGLE_COLLECTION,
-        payload: params
+        payload: params,
+        callback,
+        reqFromSingleCollection
     }
 };
 

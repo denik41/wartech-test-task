@@ -11,6 +11,7 @@ import {
     getBooks
 } from '../../actions/books';
 import AddBook from '../add-book-component';
+import axios from 'axios';
 
 class Collection extends Component {
     constructor(props) {
@@ -37,11 +38,11 @@ class Collection extends Component {
 
     render() {
         const collection = this.props.collection.data;
-        if (!this.props.collection.data) {
+        if (!collection) {
             return null;
         }
 
-        const books = this.props.collection.data.books;
+        const books = collection.books;
         const booksElem = books.map((book, index) => {
             return <div key={index}>
                 {book.name}
