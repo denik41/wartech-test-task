@@ -53,6 +53,7 @@ function* editSingleCollectionAsync(action) {
         const response = yield call(axios, config);
         console.log(response);
         yield put({type: EDIT_SINGLE_COLLECTION_SUCCEED, payload: response.data});
+        yield put({type: GET_COLLECTIONS});
     } catch (error) {
         console.log("Error occurred: " + error);
 

@@ -1,16 +1,52 @@
 .sample-container {
+    display: flex;
+    flex-direction: row;
+    border: solid 2px #65c547;
+    border-radius: 7px;
+    height: 80px;
+    padding: 10px;
+    margin-bottom: 5px;
+}
+
+.sample-container:hover {
+
+}
+
+.info-container {
+    display: flex;
+    flex: 8;
     flex-direction: column;
-    border: solid 1px black;
+    align-items: flex-start;
+}
+
+.buttons-container {
+    flex: 2;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-right: 15px;
+}
+
+.buttons-container input:focus{
+    outline: none;
+}
+
+.delete {
+    margin-left: 15px;
 }
 
 .name {
-    display: block;
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration-style: solid;
+}
+
+.name:hover {
+    color: #2f933f;
 }
 
 .description {
-
-}
-
-.green-background {
-    background-color: #b1ffa0;
+    margin-top: 10px;
+    text-align: left;
 }
