@@ -5,7 +5,8 @@ import {
     getSingleCollection,
     editSingleCollection,
     addBook,
-    removeBook
+    removeBook,
+    clearSingleCollection
 } from '../../actions/collections';
 import {
     getBooks
@@ -25,6 +26,10 @@ class Collection extends Component {
     componentDidMount() {
         this.props.getSingleCollection(this.props.match.params.id);
         this.props.getBooks();
+    }
+
+    componentWillUnmount() {
+        this.props.clearSingleCollection();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -133,6 +138,9 @@ export default connect(
         },
         removeBook: (collectionId, bookId, index) => {
             dispatch(removeBook(collectionId, bookId, index))
+        },
+        clearSingleCollection: () => {
+            dispatch(clearSingleCollection())
         }
     })
 )(Collection);

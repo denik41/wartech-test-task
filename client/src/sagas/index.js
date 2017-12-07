@@ -4,7 +4,8 @@ import {
     watchGetCollections,
     watchGetSingleCollection,
     watchAddBook,
-    watchRemoveBook
+    watchRemoveBook,
+    watchDeleteCollection
 } from './collections';
 import {
     watchGetBooks
@@ -17,6 +18,7 @@ export default function* root() {
         fork(watchEditSingleCollection),
         fork(watchGetBooks),
         fork(watchAddBook),
-        fork(watchRemoveBook)
+        fork(watchRemoveBook),
+        fork(watchDeleteCollection)
     ]);
 }

@@ -31,7 +31,10 @@ export default class CollectionSample extends Component {
                            alt="Delete collection"
                            width="38"
                            height="38"
-                           className="delete"/>
+                           className="delete"
+                           onClick={() => {
+                               this.props.openDeleteModal(collection._id);
+                           }}/>
                 </div>
             </div>
         </div>

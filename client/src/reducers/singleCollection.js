@@ -6,7 +6,8 @@ import {
     EDIT_SINGLE_COLLECTION_SUCCEED,
     EDIT_SINGLE_COLLECTION_FAILED,
     ADD_BOOK_SUCCEED,
-    REMOVE_BOOK_SUCCEED
+    REMOVE_BOOK_SUCCEED,
+    CLEAR_SINGLE_COLLECTION
 } from '../constants/collections';
 
 const initialState = {
@@ -61,6 +62,9 @@ export default (state = initialState, action) => {
                 books
             }
         }
+    }
+    if (action.type === CLEAR_SINGLE_COLLECTION) {
+        return initialState;
     }
     return state;
 }

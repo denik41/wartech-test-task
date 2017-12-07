@@ -13,7 +13,8 @@ import {
     ADD_BOOK_FAILED,
     REMOVE_BOOK,
     REMOVE_BOOK_SUCCEED,
-    REMOVE_BOOK_FAILED
+    REMOVE_BOOK_FAILED,
+    DELETE_COLLECTION
 } from '../constants/collections';
 import {call, takeEvery, put} from 'redux-saga/effects';
 import axios from 'axios';
@@ -98,6 +99,17 @@ function* removeBookAsync(action) {
     }
 }
 
+function* deleteCollectionAsync(action) {
+    try {
+        const response = yield call(axios.delete, `http://localhost:3001/api/collections/${action.payload.id}`);
+        console.log(response);
+        yield put({type: GET_COLLECTIONS});
+        action.callback();
+    } catch (error) {
+        console.log("Error occurred: " + error);
+    }
+}
+
 export function* watchGetCollections() {
     yield takeEvery(GET_COLLECTIONS, getCollectionsAsync);
 }
@@ -116,4 +128,8 @@ export function* watchAddBook() {
 
 export function* watchRemoveBook() {
     yield takeEvery(REMOVE_BOOK, removeBookAsync);
+}
+
+export function* watchDeleteCollection() {
+    yield takeEvery(DELETE_COLLECTION, deleteCollectionAsync);
 }

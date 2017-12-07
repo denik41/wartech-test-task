@@ -3,7 +3,9 @@ import {
     GET_SINGLE_COLLECTION,
     EDIT_SINGLE_COLLECTION,
     ADD_BOOK,
-    REMOVE_BOOK
+    REMOVE_BOOK,
+    CLEAR_SINGLE_COLLECTION,
+    DELETE_COLLECTION
 } from '../constants/collections';
 
 export const getCollections = () => {
@@ -46,5 +48,19 @@ export const removeBook = (collectionId, bookId, index) => {
             bookId,
             index
         }
+    }
+};
+
+export const clearSingleCollection = () => {
+    return {
+        type: CLEAR_SINGLE_COLLECTION
+    }
+};
+
+export const deleteCollection = (id, callback) => {
+    return {
+        type: DELETE_COLLECTION,
+        payload: {id},
+        callback
     }
 };
