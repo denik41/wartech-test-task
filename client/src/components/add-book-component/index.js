@@ -19,13 +19,18 @@ export default class AddBook extends Component {
         const options = this.props.books.map((book, index) => {
             return <option key={index} value={index}>{book.name}</option>
         });
-        return <div>
-            <span>Select the book to add</span>
-            <select onChange={(event) => {
-                this.setState({selectedBookIndex: event.target.value})
-            }}>
-                {options}
-            </select>
+
+        return <div className="add-book-container">
+            <div className="">
+                <span className="add-book-text">Select the book to add</span>
+                <select onChange={(event) => {
+                    this.setState({selectedBookIndex: event.target.value})
+                }}
+                        className="add-book-select">
+                    {options}
+                </select>
+            </div>
+
             <button onClick={() => {
                 if (this.state.selectedBookIndex !== null) {
                     this.props.addBook(this.props.books[this.state.selectedBookIndex]);

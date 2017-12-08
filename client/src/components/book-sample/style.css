@@ -1,0 +1,51 @@
+.book-sample-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border: solid 2px #65c547;
+    border-radius: 7px;
+    height: 50px;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 5px;
+}
+
+.book-sample-container:hover {
+    background-color: #bdffbf;
+}
+
+.name-author-container {
+
+}
+
+.right-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 100%;
+}
+
+.book-name {
+    font-size: 18px;
+}
+
+.book-author {
+    margin-left: 5px;
+    font-size: 18px;
+    font-style: italic;
+}
+
+.book-price {
+    display: block;
+    text-align: left;
+    margin-top: 5px;
+    padding-left: 7px;
+    font-weight: bold;
+    color: #256a32;
+}
+
+.right-panel input:focus {
+    outline: none;
+}

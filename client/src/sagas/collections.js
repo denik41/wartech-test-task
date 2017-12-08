@@ -14,7 +14,10 @@ import {
     REMOVE_BOOK,
     REMOVE_BOOK_SUCCEED,
     REMOVE_BOOK_FAILED,
-    DELETE_COLLECTION
+    DELETE_COLLECTION,
+    CREATE_COLLECTION,
+    CREATE_COLLECTION_SUCCEED,
+    CREATE_COLLECTION_FAILED
 } from '../constants/collections';
 import {call, takeEvery, put} from 'redux-saga/effects';
 import axios from 'axios';
@@ -92,6 +95,7 @@ function* removeBookAsync(action) {
         const response = yield call(axios.delete, `http://localhost:3001/api/collections/${action.payload.collectionId}/books/${action.payload.bookId}`);
         console.log(response);
         yield put({type: REMOVE_BOOK_SUCCEED, payload: action.payload.index});
+        action.callback();
     } catch (error) {
         console.log("Error occurred: " + error);
 
@@ -107,6 +111,24 @@ function* deleteCollectionAsync(action) {
         action.callback();
     } catch (error) {
         console.log("Error occurred: " + error);
+    }
+}
+
+function* createCollectionAsync(action) {
+    try {
+        const config = {
+            method: 'POST',
+            url: `http://localhost:3001/api/collections/`,
+            headers: {"Content-Type": "application/x-www-form-urlencoded"},
+            data: `name=${action.payload.name}&description=${action.payload.description}`
+        };
+        const response = yield call(axios, config);
+        console.log(response);
+        yield put({type: CREATE_COLLECTION_SUCCEED, payload: response.data});
+        action.callback();
+    } catch (error) {
+        console.log("Error occurred: " + error);
+        yield put({type: CREATE_COLLECTION_FAILED, payload: error.message});
     }
 }
 
@@ -132,4 +154,8 @@ export function* watchRemoveBook() {
 
 export function* watchDeleteCollection() {
     yield takeEvery(DELETE_COLLECTION, deleteCollectionAsync);
+}
+
+export function* watchCreateCollection() {
+    yield takeEvery(CREATE_COLLECTION, createCollectionAsync);
 }

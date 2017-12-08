@@ -5,7 +5,8 @@ import {
     ADD_BOOK,
     REMOVE_BOOK,
     CLEAR_SINGLE_COLLECTION,
-    DELETE_COLLECTION
+    DELETE_COLLECTION,
+    CREATE_COLLECTION
 } from '../constants/collections';
 
 export const getCollections = () => {
@@ -40,14 +41,15 @@ export const addBook = (book, collectionId) => {
     }
 };
 
-export const removeBook = (collectionId, bookId, index) => {
+export const removeBook = (data, callback) => {
     return {
         type: REMOVE_BOOK,
         payload: {
-            collectionId,
-            bookId,
-            index
-        }
+            collectionId: data.collectionId,
+            bookId: data.bookId,
+            index: data.index
+        },
+        callback
     }
 };
 
@@ -61,6 +63,14 @@ export const deleteCollection = (id, callback) => {
     return {
         type: DELETE_COLLECTION,
         payload: {id},
+        callback
+    }
+};
+
+export const createCollection = (data, callback) => {
+    return {
+        type: CREATE_COLLECTION,
+        payload: data,
         callback
     }
 };

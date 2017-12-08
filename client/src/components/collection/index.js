@@ -12,14 +12,21 @@ import {
     getBooks
 } from '../../actions/books';
 import AddBook from '../add-book-component';
-import axios from 'axios';
+import BookSample from '../book-sample';
+import Modal from '../modal';
+import DeleteConfirm from '../delete-confirm';
 
 class Collection extends Component {
     constructor(props) {
         super(props);
         this.state = {
             editName: "",
-            editDescription: ""
+            editDescription: "",
+            removeBook: {
+                modalShown: false,
+                id: "",
+                index: null
+            }
         }
     }
 
@@ -41,6 +48,16 @@ class Collection extends Component {
         }
     }
 
+    closeDeleteModal() {
+        this.setState({
+            removeBook: {
+                modalShown: false,
+                id: "",
+                index: null
+            }
+        });
+    }
+
     render() {
         const collection = this.props.collection.data;
         if (!collection) {
@@ -49,34 +66,59 @@ class Collection extends Component {
 
         const books = collection.books;
         const booksElem = books.map((book, index) => {
-            return <div key={index}>
-                {book.name}
-                <div>
-                    <button onClick={() => {
-                        this.props.removeBook(this.props.match.params.id, book._id, index);
-                    }}>Remove book</button>
-                </div>
-            </div>;
+            return <BookSample book={book}
+                               key={index}
+                               onRemoveBook={() => {
+                                   this.setState({
+                                       removeBook: {
+                                           modalShown: true,
+                                           id: book._id,
+                                           index
+                                       }
+                                   });
+                               }}/>
         });
-        return <div>
-            <div>
-                <h3>{collection.name}</h3>
-                <span>{collection.description}</span>
+
+        return <div className="collection-container">
+            <div className="collection-title-container">
                 <div>
                     <button onClick={() => {
                         this.dialog.show();
                     }}>
-                        Edit collection's info
+                        Edit collection
                     </button>
                 </div>
+                <span>{collection.name}</span>
+                <div></div>
             </div>
+            <span className="collection-description-container">{collection.description}</span>
+            <span className="collection-books-title">Books of collection</span>
+            {books.length !== 0 ?
+                <div className="books-list">
+                    {booksElem}
+                </div> :
+                <span className="empty">No books</span>
+            }
             <AddBook addBook={(book) => {
                 this.props.addBook(book, this.props.match.params.id);
             }}
                      books={this.props.books}/>
-            {books.length !== 0 ? booksElem :
-                <span>No books</span>
-            }
+
+            <Modal shown={this.state.removeBook.modalShown}
+                   closeModal={this.closeDeleteModal.bind(this)}
+                   title="Do you want to remove this book from collection?">
+                <DeleteConfirm
+                    onReject={this.closeDeleteModal.bind(this)}
+                    onConfirm={() => {
+                        this.props.removeBook({
+                            collectionId: this.props.match.params.id,
+                            bookId: this.state.removeBook.id,
+                            index: this.state.removeBook.index
+                        }, this.closeDeleteModal.bind(this));
+                    }}/>
+            </Modal>
+
+
             <dialog ref={dialog => this.dialog = dialog}>
                 <label>Name<input type="text"
                                   autoComplete="off"
@@ -105,6 +147,7 @@ class Collection extends Component {
                             id: this.props.match.params.id,
                             name: this.state.editName,
                             description: this.state.editDescription
+                        }, () => {
                         });
                     }}>Edit
                     </button>
@@ -127,8 +170,8 @@ export default connect(
         getSingleCollection: (id) => {
             dispatch(getSingleCollection(id))
         },
-        editSingleCollection: (params) => {
-            dispatch(editSingleCollection(params))
+        editSingleCollection: (params, callback) => {
+            dispatch(editSingleCollection(params, callback))
         },
         getBooks: () => {
             dispatch(getBooks())
@@ -136,8 +179,8 @@ export default connect(
         addBook: (book, collectionId) => {
             dispatch(addBook(book, collectionId))
         },
-        removeBook: (collectionId, bookId, index) => {
-            dispatch(removeBook(collectionId, bookId, index))
+        removeBook: (data, callback) => {
+            dispatch(removeBook(data, callback))
         },
         clearSingleCollection: () => {
             dispatch(clearSingleCollection())

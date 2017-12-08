@@ -39,9 +39,9 @@ export default (state = initialState, action) => {
                 description: action.payload.description
             }};
     }
-    if (action.type === EDIT_SINGLE_COLLECTION_FAILED) {
-        return {isError: true, loading: false, data: action.payload};
-    }
+    // if (action.type === EDIT_SINGLE_COLLECTION_FAILED) {
+    //     return {isError: true, loading: false, data: action.payload};
+    // }
     if (action.type === ADD_BOOK_SUCCEED) {
         return {
             ...state,

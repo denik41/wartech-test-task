@@ -50,7 +50,6 @@
     width: 380px;
     height: 35px;
     margin-left: 25px;
-    border: solid 2px #2f933f;
     border-radius: 5px;
     outline: none;
     padding: 3px 5px;
@@ -63,7 +62,6 @@
     margin-left: 25px;
     resize: none;
     outline: none;
-    border: solid 2px #2f933f;
     border-radius: 5px;
     padding: 3px 5px;
     font-size: 14px;
@@ -95,4 +93,12 @@
     margin-top: 30px;
     display: flex;
     justify-content: space-around;
+}
+
+.red-border {
+    border: solid 2px red;
+}
+
+.green-border {
+    border: solid 2px #2f933f;
 }
