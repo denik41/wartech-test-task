@@ -15,6 +15,7 @@ import AddBook from '../add-book-component';
 import BookSample from '../book-sample';
 import Modal from '../modal';
 import DeleteConfirm from '../delete-confirm';
+import EditModalContent from '../edit-modal-content';
 
 class Collection extends Component {
     constructor(props) {
@@ -22,6 +23,7 @@ class Collection extends Component {
         this.state = {
             editName: "",
             editDescription: "",
+            editModalShown: false,
             removeBook: {
                 modalShown: false,
                 id: "",
@@ -39,15 +41,6 @@ class Collection extends Component {
         this.props.clearSingleCollection();
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (this.props.collection.loading && !nextProps.collection.loading) {
-            this.setState({
-                editName: nextProps.collection.data.name,
-                editDescription: nextProps.collection.data.description
-            });
-        }
-    }
-
     closeDeleteModal() {
         this.setState({
             removeBook: {
@@ -55,6 +48,22 @@ class Collection extends Component {
                 id: "",
                 index: null
             }
+        });
+    }
+
+    openEditModal() {
+        this.setState({
+            editModalShown: true,
+            editName: this.props.collection.data.name,
+            editDescription: this.props.collection.data.description
+        });
+    }
+
+    closeEditModal() {
+        this.setState({
+            editModalShown: false,
+            editName: "",
+            editDescription: "",
         });
     }
 
@@ -82,9 +91,7 @@ class Collection extends Component {
         return <div className="collection-container">
             <div className="collection-title-container">
                 <div>
-                    <button onClick={() => {
-                        this.dialog.show();
-                    }}>
+                    <button onClick={this.openEditModal.bind(this)}>
                         Edit collection
                     </button>
                 </div>
@@ -118,45 +125,22 @@ class Collection extends Component {
                     }}/>
             </Modal>
 
-
-            <dialog ref={dialog => this.dialog = dialog}>
-                <label>Name<input type="text"
-                                  autoComplete="off"
-                                  maxLength="100"
-                                  value={this.state.editName}
-                                  onChange={(event) => {
-                                      this.setState({
-                                          editName: event.target.value
-                                      });
-                                  }}/>
-                </label>
-                <label>Description
-                    <textarea autoComplete="off"
-                              maxLength="500"
-                              wrap="soft"
-                              value={this.state.editDescription}
-                              onChange={(event) => {
-                                  this.setState({
-                                      editDescription: event.target.value
-                                  });
-                              }}/>
-                </label>
-                <p>
-                    <button onClick={() => {
+            <Modal shown={this.state.editModalShown}
+                   closeModal={this.closeEditModal.bind(this)}
+                   title="Collection editor">
+                <EditModalContent
+                    buttonTitle="Edit"
+                    name={this.state.editName}
+                    description={this.state.editDescription}
+                    onConfirm={(name, description) => {
                         this.props.editSingleCollection({
                             id: this.props.match.params.id,
-                            name: this.state.editName,
-                            description: this.state.editDescription
-                        }, () => {
-                        });
-                    }}>Edit
-                    </button>
-                    <button onClick={() => {
-                        this.dialog.close();
-                    }}>Close
-                    </button>
-                </p>
-            </dialog>
+                            name,
+                            description
+                        }, this.closeEditModal.bind(this));
+                    }}
+                    onReject={this.closeEditModal.bind(this)}/>
+            </Modal>
         </div>
     }
 }

@@ -11,6 +11,7 @@ import CollectionSample from '../collection-sample';
 import PlusImage from '../../assets/img/plus.jpg';
 import Modal from '../modal';
 import DeleteConfirm from '../delete-confirm';
+import EditModalContent from '../edit-modal-content';
 
 class CollectionsContainer extends Component {
     constructor(props) {
@@ -33,24 +34,6 @@ class CollectionsContainer extends Component {
 
     componentDidMount() {
         this.props.getCollections();
-    }
-
-    handleNameChange(event) {
-        this.setState({
-            editCollection: {
-                ...this.state.editCollection,
-                name: event.target.value
-            }
-        });
-    }
-
-    handleDescriptionChange(event) {
-        this.setState({
-            editCollection: {
-                ...this.state.editCollection,
-                description: event.target.value
-            }
-        });
     }
 
     onOpenEditModal(collection) {
@@ -79,6 +62,20 @@ class CollectionsContainer extends Component {
         });
     }
 
+    closeCreateModal(name, description) {
+        this.setState({
+            editCollection: {
+                ...this.state.editCollection,
+                modalShown: false,
+                isEmptyField: false,
+                collectionId: "",
+                createMode: false,
+                name: name,
+                description: description
+            }
+        });
+    }
+
     onOpenDeleteModal(id) {
         this.setState({
             deleteModal: {
@@ -101,24 +98,28 @@ class CollectionsContainer extends Component {
         this.setState({
             editCollection: {
                 ...this.state.editCollection,
+                name: "",
+                description: "",
                 modalShown: true,
                 createMode: true
             }
         });
     }
 
-    createCollection() {
+    createCollection(name, description) {
         this.props.createCollection({
-            name: this.state.editCollection.name,
-            description: this.state.editCollection.description
-        }, this.closeModal.bind(this));
+            name,
+            description
+        }, () => {
+            this.closeCreateModal(name, description);
+        });
     }
 
-    editCollection() {
+    editCollection(name, description) {
         this.props.editSingleCollection({
             id: this.state.editCollection.collectionId,
-            name: this.state.editCollection.name,
-            description: this.state.editCollection.description
+            name,
+            description
         }, this.closeModal.bind(this), false);
     }
 
@@ -159,35 +160,18 @@ class CollectionsContainer extends Component {
             <Modal shown={this.state.editCollection.modalShown}
                    closeModal={this.closeModal.bind(this)}
                    title={this.state.editCollection.createMode ? "Collection creating" : "Edit collection info"}>
-                <label className="label">Name<input type="text"
-                                                    autoComplete="off"
-                                                    maxLength="100"
-                                                    value={this.state.editCollection.name}
-                                                    onChange={this.handleNameChange.bind(this)}
-                                                    className={this.state.editCollection.name ?
-                                                        "green-border" : "red-border"}/>
-                </label>
-                <label className="label">Description
-                    <textarea autoComplete="off"
-                              maxLength="500"
-                              wrap="soft"
-                              value={this.state.editCollection.description}
-                              onChange={this.handleDescriptionChange.bind(this)}
-                              className={this.state.editCollection.description ?
-                                  "green-border" : "red-border"}/>
-                </label>
-                <button onClick={() => {
-                    if (this.state.editCollection.name && this.state.editCollection.description) {
+                <EditModalContent
+                    buttonTitle={this.state.editCollection.createMode ? "Create" : "Edit"}
+                    name={this.state.editCollection.name}
+                    description={this.state.editCollection.description}
+                    onConfirm={(name, description) => {
                         if (!this.state.editCollection.createMode) {
-                            this.editCollection();
+                            this.editCollection(name, description);
                         } else {
-                            this.createCollection();
+                            this.createCollection(name, description);
                         }
-                    }
-                }}
-                        className="modal-button">
-                    {this.state.editCollection.createMode ? "Create" : "Edit"}
-                </button>
+                    }}
+                    onReject={this.closeModal.bind(this)}/>
             </Modal>
 
             <Modal shown={this.state.deleteModal.deleteCollectionModalShown}
