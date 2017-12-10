@@ -1,0 +1,10 @@
+.books-list-container {
+    width: 60%;
+}
+
+.books-list-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 20px 0 15px;
+    display: inline-block;
+}

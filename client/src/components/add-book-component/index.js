@@ -17,8 +17,10 @@ export default class AddBook extends Component {
 
     render() {
         const options = this.props.books.map((book, index) => {
-            return <option key={index} value={index}>{book.name}</option>
+            return <option key={index} value={index}>{book.name} ({book.author})</option>
         });
+
+
 
         return <div className="add-book-container">
             <div className="">
@@ -32,10 +34,11 @@ export default class AddBook extends Component {
             </div>
 
             <button onClick={() => {
-                if (this.state.selectedBookIndex !== null) {
+                if (this.state.selectedBookIndex !== null && this.props.books.length > 0) {
                     this.props.addBook(this.props.books[this.state.selectedBookIndex]);
                 }
-            }}>Add</button>
+            }}>Add
+            </button>
         </div>
     }
 }

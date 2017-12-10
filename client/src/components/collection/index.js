@@ -67,6 +67,14 @@ class Collection extends Component {
         });
     }
 
+    getBooksForAdding() {
+        return this.props.books.filter((book) => {
+            return !this.props.collection.data.books.some((collectionBook) => {
+                return collectionBook._id === book._id;
+            });
+        });
+    }
+
     render() {
         const collection = this.props.collection.data;
         if (!collection) {
@@ -74,6 +82,8 @@ class Collection extends Component {
         }
 
         const books = collection.books;
+        const booksToAdd = this.getBooksForAdding();
+
         const booksElem = books.map((book, index) => {
             return <BookSample book={book}
                                key={index}
@@ -109,7 +119,7 @@ class Collection extends Component {
             <AddBook addBook={(book) => {
                 this.props.addBook(book, this.props.match.params.id);
             }}
-                     books={this.props.books}/>
+                     books={booksToAdd}/>
 
             <Modal shown={this.state.removeBook.modalShown}
                    closeModal={this.closeDeleteModal.bind(this)}

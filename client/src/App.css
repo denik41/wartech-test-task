@@ -7,3 +7,28 @@
     width: 100%;
     height: 100%;
 }
+
+.nav-links-container {
+    display: flex;
+    width: 60%;
+}
+
+.nav-link{
+    border: solid 2px #65c547;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    height: 40px;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-link:hover {
+    background-color: #bdffbf;
+}
+
+.nav-link-active {
+    background-color: #bdffbf;
+}
