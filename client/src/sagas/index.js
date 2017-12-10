@@ -10,7 +10,8 @@ import {
 } from './collections';
 import {
     watchGetBooks,
-    watchDeleteBook
+    watchDeleteBook,
+    watchCreateBook
 } from './books';
 
 export default function* root() {
@@ -20,6 +21,7 @@ export default function* root() {
         fork(watchEditSingleCollection),
         fork(watchGetBooks),
         fork(watchDeleteBook),
+        fork(watchCreateBook),
         fork(watchAddBook),
         fork(watchRemoveBook),
         fork(watchDeleteCollection),

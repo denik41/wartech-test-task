@@ -1,6 +1,7 @@
 import {
     GET_BOOKS,
-    DELETE_BOOK
+    DELETE_BOOK,
+    CREATE_BOOK
 } from '../constants/books';
 
 export const getBooks = () => {
@@ -15,6 +16,14 @@ export const deleteBook = (id, callback) => {
         payload: {
             id
         },
+        callback
+    }
+};
+
+export const createBook = (data, callback) => {
+    return {
+        type: CREATE_BOOK,
+        payload: data,
         callback
     }
 };

@@ -4,17 +4,21 @@ import {connect} from 'react-redux';
 import BookSample from '../book-sample';
 import {
     getBooks,
-    deleteBook
+    deleteBook,
+    createBook
 } from '../../actions/books';
 import Modal from '../modal';
 import DeleteConfirm from '../delete-confirm';
+import PlusImage from '../../assets/img/plus.jpg';
+import CreateBookModalContent from '../create-book-modal-content';
 
 class BooksList extends Component {
     constructor(props) {
         super(props);
         this.state = {
             deleteConfirmModalShown: false,
-            deleteBookId: ""
+            deleteBookId: "",
+            createModalShown: false
         }
     }
 
@@ -36,6 +40,18 @@ class BooksList extends Component {
         });
     }
 
+    openCreatingModal() {
+        this.setState({
+            createModalShown: true
+        });
+    }
+
+    closeCreatingModal() {
+        this.setState({
+            createModalShown: false
+        });
+    }
+
     render() {
         const list = this.props.books.map((book, index) => {
             return <BookSample book={book}
@@ -49,6 +65,15 @@ class BooksList extends Component {
             <span className="books-list-title">Books List</span>
             {list}
 
+            <div className="create-container">
+                <input type="image"
+                       src={PlusImage}
+                       alt="Create collection"
+                       width="38"
+                       height="38"
+                       onClick={this.openCreatingModal.bind(this)}/>
+            </div>
+
             <Modal shown={this.state.deleteConfirmModalShown}
                    closeModal={this.closeDeleteConfirmModal.bind(this)}
                    title="Do you want to delete this book?">
@@ -57,6 +82,16 @@ class BooksList extends Component {
                     onConfirm={() => {
                         this.props.deleteBook(this.state.deleteBookId, this.closeDeleteConfirmModal.bind(this));
                     }}/>
+            </Modal>
+
+            <Modal shown={this.state.createModalShown}
+                   closeModal={this.closeCreatingModal.bind(this)}
+                   title="Create new book">
+                <CreateBookModalContent
+                    onCreate={(data) => {
+                        this.props.createBook(data, this.closeCreatingModal.bind(this));
+                    }}
+                    shown={this.state.createModalShown}/>
             </Modal>
         </div>
     }
@@ -72,6 +107,9 @@ export default connect(
         },
         deleteBook: (id, callback) => {
             dispatch(deleteBook(id, callback))
+        },
+        createBook: (data, callback) => {
+            dispatch(createBook(data, callback))
         }
     })
 )(BooksList);
