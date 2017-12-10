@@ -1,0 +1,16 @@
+.rate-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.rate-label input {
+    width: 50px;
+    height: 35px;
+    margin-left: 25px;
+    border-radius: 5px;
+    outline: none;
+    padding: 3px 5px;
+    font-size: 16px;
+}

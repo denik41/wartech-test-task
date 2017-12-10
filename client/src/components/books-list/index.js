@@ -5,12 +5,14 @@ import BookSample from '../book-sample';
 import {
     getBooks,
     deleteBook,
-    createBook
+    createBook,
+    rateBook
 } from '../../actions/books';
 import Modal from '../modal';
 import DeleteConfirm from '../delete-confirm';
 import PlusImage from '../../assets/img/plus.jpg';
 import CreateBookModalContent from '../create-book-modal-content';
+import RateModalContent from '../rate-modal-content';
 
 class BooksList extends Component {
     constructor(props) {
@@ -110,6 +112,9 @@ export default connect(
         },
         createBook: (data, callback) => {
             dispatch(createBook(data, callback))
+        },
+        rateBook: (data, index, callback) => {
+            dispatch(rateBook(data, index, callback))
         }
     })
 )(BooksList);

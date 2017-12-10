@@ -49,3 +49,13 @@
 .right-panel input:focus {
     outline: none;
 }
+
+.rating-value {
+    text-decoration: solid underline black;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.rating-value:hover {
+    color: #256a32;
+}

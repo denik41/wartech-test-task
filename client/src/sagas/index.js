@@ -11,7 +11,8 @@ import {
 import {
     watchGetBooks,
     watchDeleteBook,
-    watchCreateBook
+    watchCreateBook,
+    watchRateBook
 } from './books';
 
 export default function* root() {
@@ -25,6 +26,7 @@ export default function* root() {
         fork(watchAddBook),
         fork(watchRemoveBook),
         fork(watchDeleteCollection),
-        fork(watchCreateCollection)
+        fork(watchCreateCollection),
+        fork(watchRateBook)
     ]);
 }

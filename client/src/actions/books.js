@@ -1,7 +1,8 @@
 import {
     GET_BOOKS,
     DELETE_BOOK,
-    CREATE_BOOK
+    CREATE_BOOK,
+    RATE_BOOK
 } from '../constants/books';
 
 export const getBooks = () => {
@@ -24,6 +25,15 @@ export const createBook = (data, callback) => {
     return {
         type: CREATE_BOOK,
         payload: data,
+        callback
+    }
+};
+
+export const rateBook = (data, index, callback) => {
+    return {
+        type: RATE_BOOK,
+        payload: data,
+        index,
         callback
     }
 };
