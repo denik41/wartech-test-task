@@ -32,3 +32,8 @@
 .nav-link-active {
     background-color: #bdffbf;
 }
+
+.not-found-message {
+    margin-top: 50px;
+    font-size: 48px;
+}

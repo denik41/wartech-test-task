@@ -3,7 +3,8 @@ import './App.css';
 import {
     BrowserRouter as Router,
     Route,
-    NavLink
+    NavLink,
+    Switch
 } from 'react-router-dom';
 
 import CollectionsContainer from './components/collections-container';
@@ -29,9 +30,12 @@ export default class App extends Component {
                             Books
                         </NavLink>
                     </div>
-                    <Route exact path="/" component={CollectionsContainer}/>
-                    <Route path="/collection/:id" component={Collection}/>
-                    <Route path="/books" component={BooksList}/>
+                    <Switch>
+                        <Route exact path="/" component={CollectionsContainer}/>
+                        <Route path="/collection/:id" component={Collection}/>
+                        <Route path="/books" component={BooksList}/>
+                        <Route render={() => <div className="not-found-message">Not Found</div>}/>
+                    </Switch>
                 </div>
             </Router>
         );
